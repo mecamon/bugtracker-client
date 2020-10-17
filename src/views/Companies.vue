@@ -4,6 +4,7 @@
         <CompaniesNav />
         <FilterBar />
         <CompaniesContainer />
+        <ModalCreateCompany v-if="showModal" />
     </div>
 </template>
 
@@ -12,6 +13,7 @@ import Header from '../components/Header.vue'
 import CompaniesNav from '../components/CompaniesNav.vue'
 import FilterBar from '../components/FilterBar.vue'
 import CompaniesContainer from '../components/CompaniesContainer.vue'
+import ModalCreateCompany from '../components/ModalCreateCompany.vue'
 
 
 export default {
@@ -20,10 +22,16 @@ export default {
         CompaniesNav,
         FilterBar,
         CompaniesContainer,
+        ModalCreateCompany
     },
     data() {
         return {
-
+            showModal: false
+        }
+    },
+    methods: {
+        switchModalVisibility(newState) {
+            this.showModal = newState
         }
     }
 }
