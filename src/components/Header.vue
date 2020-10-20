@@ -4,10 +4,10 @@
     <div class="user-info">
       <img src="../assets/user.svg" alt="user-icon">
       <div class="block-names">
-        <p>Carlos Alberto Mejia</p>
+        <p>{{ completeName }}</p>
         <p class="orange-text">Superuser</p>
       </div>
-      <button class="btn btn-secondary">Log out</button>
+      <button class="btn btn-secondary" @click="logout">Log out</button>
     </div>
   </div>
 </template>
@@ -21,8 +21,17 @@ export default {
   },
   name: 'Header',
   data() {
-    return {};
+    return {
+      completeName: localStorage.getItem('firstname') 
+        + ' ' + localStorage.getItem('lastname')
+    };
   },
+  methods: {
+    logout() {
+      localStorage.clear()
+      this.$router.push({ path: '/' })
+    }
+  }
 };
 </script>
 

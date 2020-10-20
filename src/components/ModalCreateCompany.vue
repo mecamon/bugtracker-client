@@ -1,56 +1,52 @@
 <template>
   <div class="modal-bg">
     <div class="modal">
-      <img class="close-icon" src="../assets/close.svg" alt="close-icon">
+      <img
+        @click="closeModal"
+        class="close-icon"
+        src="../assets/close.svg"
+        alt="close-icon"
+      />
       <div class="safe-area">
-        <div class="center">
+        <div id="title">
           <h3>New company information</h3>
         </div>
-      <div class="row">
-        <div class="column">
+        <div id="name-group">
           <label>Name</label>
           <input type="text" />
-          <p>.</p>
         </div>
-        <div class="column">
+        <div id="rnc-group">
           <label>RNC</label>
           <input type="text" />
           <p class="alert-text">RNC inserted is already in use!</p>
         </div>
-      </div>
-      <div class="row">
-        <div class="column">
+        <div id="email-group">
           <label>Email</label>
           <input type="text" />
-          <p class="alert-text">Email inserted is already in use!</p>
+          <p class="alert-text">RNC inserted is already in use!</p>
         </div>
-        <div class="column">
-          <label>Email</label>
+        <div id="telephone-group">
+          <label>Telephone</label>
           <input type="text" />
           <p class="alert-text">Telephone inserted is already in use!</p>
         </div>
-      </div>
-      <div class="row">
-        <div class="column">
+        <div id="users-group">
           <label>Users paid</label>
           <input type="text" />
         </div>
-        <div class="column">
+        <div id="date-group">
           <label>Date of expiration</label>
           <input type="date" />
         </div>
-      </div>
-      <div class="column">
-        <label>Description</label>
-        <textarea id="" cols="30" rows="10"></textarea>
-        <p class="alert-text">
-          Description can have a maximun of 400 characters!
-        </p>
-      </div>
-      <div class="buttons-group">
+        <div id="description-group">
+          <label>Description</label>
+          <textarea cols="30" rows="10"></textarea>
+          <p class="alert-text">Description can have a maximun of 400 characters!</p>
+        </div>
+        <div class="buttons-group">
         <div class="buttons">
           <button class="btn btn-main">Register</button>
-          <button class="btn btn-danger">Cancel</button>
+          <button @click="closeModal" class="btn btn-danger">Cancel</button>
         </div>
         <p class="alert-text">All fields are required!</p>
       </div>
@@ -61,13 +57,19 @@
 
 <script>
 export default {
-  name: 'ModalCreateCompany',
+  name: 'ModalCreateCompanyFixed',
+  methods: {
+    closeModal() {
+      this.$store.commit('companies/switchModalVisibility', false);
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 @import '../styles/variables';
 @import '../styles/mixins';
+
 .modal-bg {
   position: fixed;
   width: 100%;
@@ -85,30 +87,59 @@ export default {
   height: 600px;
   border-radius: 4px;
   .safe-area {
-    @include flexColumn(stretch, space-evenly);
-    // background-color: red;
-    height: 85%;
+    // background-color: rgb(168, 168, 168);
+    position: relative;
+    height: 100%;
     width: 462px;
   }
 }
-.center {
+#title {
+  position: absolute;
+  top: 39px;
   @include flexRow();
+  width: 100%;
 }
-.row {
-  @include flexRow(center, space-between);
-}
-.column {
+#name-group {
   @include flexColumn(start, center);
+  position: absolute;
+  top: 100px;
+  left: 0;
 }
-.buttons-group {
-  @include flexColumn();
-  .buttons {
-    @include flexRow(center, space-between);
-    width: 45%;
-    button {
-      border-radius: 4px;
-    }
-  }
+#rnc-group {
+  @include flexColumn(start, center);
+  position: absolute;
+  top: 100px;
+  right: 0;
+}
+#email-group {
+  @include flexColumn(start, center);
+  position: absolute;
+  top: 172px;
+  left: 0;
+}
+#telephone-group {
+  @include flexColumn(start, center);
+  position: absolute;
+  top: 172px;
+  right: 0;
+}
+#users-group {
+  @include flexColumn(start, center);
+  position: absolute;
+  top: 245px;
+  left: 0;
+}
+#date-group {
+  @include flexColumn(start, center);
+  position: absolute;
+  top: 245px;
+  right: 0;
+}
+#description-group {
+  @include flexColumn(start, center);
+  position: absolute;
+  top: 306px;
+  right: 0;
 }
 h3 {
   font-size: 20px;
@@ -117,18 +148,10 @@ h3 {
 input {
   width: 220px;
   height: 30px;
-  background-color: #ECECEC;
+  background-color: #ececec;
   border: none;
   font-size: 14px;
   text-indent: 6px;
-}
-textarea {
-  width: 462px;
-  height: 107px;
-  outline: none;
-  background-color: #ECECEC;
-  border: none;
-  font-size: 14px;
 }
 label {
   font-family: $textFont;
@@ -142,5 +165,29 @@ label {
   width: 14px;
   height: auto;
   cursor: pointer;
+}
+.buttons-group {
+  width: 100%;
+  position: absolute;
+  top: 486px;
+  right: 0;
+  @include flexColumn();
+  .buttons {
+    @include flexRow(center, space-between);
+    width: 45%;
+    button {
+      border-radius: 4px;
+    }
+  }
+}
+textarea {
+  width: 462px;
+  height: 107px;
+  font-family: $textFont;
+  font-size: 14px;
+  color: #606060;
+  background-color: #ececec;
+  border: none;
+  outline: none;
 }
 </style>

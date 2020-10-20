@@ -3,27 +3,58 @@
         <div class="filter-options">
             <div class="state-group">
                 <p>State:</p>
-                <select name="state">
-                    <option value="">All</option>
-                    <option value="">Active</option>
-                    <option value="">Inactive</option>
+                <select name="state" v-model="state">
+                    <option disabled value="" >All</option>
+                    <option v-for="option in stateOptions"
+                    :key="option.value" :value="option.value" 
+                    >{{ option.text }}</option>
                 </select>
             </div>
             <div class="date-group">
                 <p>Date:</p>
-                <select name="date">
-                    <option value="">Ascendant</option>
-                    <option value="">Descendant</option>
+                <select name="date" v-model="date">
+                    <option disabled value="">Any</option>
+                    <option v-for="option in dateOptions"
+                    :key="option.value" :value="option.value" 
+                    >{{ option.text }}</option>
                 </select>
             </div>
-            <button class="btn btn-secondary">Go</button>
+            <button class="btn btn-secondary" @click="filterCompanies">Go</button>
         </div>
     </div>
 </template>
 
 <script>
 export default {
-    name: 'FilterBar'
+    name: 'FilterBar',
+    data() {
+        return {
+            date: '',
+            state: '',
+            dateOptions: [
+                { text: 'Oldest', value: 1 }, 
+                { text: 'Recent', value: -1 }, 
+            ],
+            stateOptions: [
+                { text: 'Active', value: 'Active' }, 
+                { text: 'Inactive', value: 'Inactive' }, 
+            ],
+        }
+    },
+    watch: {
+        date: function (value) {
+            this.$store.commit('companies/addDateFilter', value)
+        },
+        state: function (value) {
+            this.$store.commit('companies/addStateFilter', value)
+        },
+    },
+    computed: {},
+    methods: {
+        async filterCompanies() {
+            await this.$store.dispatch('companies/fetchCompanies')
+        }
+    }
 }
 </script>
 

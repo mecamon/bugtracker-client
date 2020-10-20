@@ -83,6 +83,12 @@ input:focus {
   color: $alertTextColor;
   font-size: 12px;
 }
+.text_active {
+  color: $activeColor;
+}
+.text_inactive {
+  color: $inactiveColor;
+}
 a {
   font-weight: bold;
   color: #ffffff;

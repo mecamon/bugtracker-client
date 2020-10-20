@@ -1,18 +1,23 @@
 <template>
   <div class="login-form">
-  <h2>Credentials</h2>
-  <div class="form-group">
-    <label for="username">Username</label>
-    <input type="text" v-model="credentials.username">
-    <p class="alert-text" v-if="credentials.username == null">Username is a required field</p>
-  </div>
-  <div class="form-group">
-    <label for="password">Password</label>
-    <input type="password" v-model="credentials.password">
-    <p class="alert-text" v-if="credentials.password == null">Password is a required field</p>
-  </div>
-  <button class="btn btn-main" @click="login">Login</button>
-  <p id="link">Forgot password</p>
+    <h2>Credentials</h2>
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" v-model="credentials.username" />
+      <p class="alert-text" v-if="credentials.username == null">
+        Username is a required field
+      </p>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" v-model="credentials.password" />
+      <p class="alert-text" v-if="credentials.password == null">
+        Password is a required field
+      </p>
+    </div>
+    <button class="btn btn-main" @click="login">Login</button>
+    <p class="alert-text" v-if="error.isShowing">{{ error.message }}</p>
+    <p id="link">Forgot password</p>
   </div>
 </template>
 
@@ -24,20 +29,42 @@ export default {
       credentials: {
         username: '',
         password: '',
-      }
-    }
+      },
+    };
+  },
+  computed: {
+    error() {
+      return this.$store.getters['auth/getError'];
+    },
   },
   methods: {
-    login() {
+    async login() {
       for (const key in this.credentials) {
         if (this.credentials[key] === '') {
-          this.credentials[key] = null
+          this.credentials[key] = null;
+          return;
         }
       }
-      console.log('Logged')
-    }
-  }
-}
+
+      const response = await this.$store.dispatch(
+        'auth/login',
+        this.credentials
+      );
+
+      if (response) {
+        const { data } = response;
+
+        const { firstname, lastname, token } = data;
+
+        localStorage.setItem('firstname', firstname);
+        localStorage.setItem('lastname', lastname);
+        localStorage.setItem('token', token);
+
+        this.$router.push('superuser/companies');
+      }
+    },
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -73,11 +100,9 @@ export default {
     }
   }
   #link {
-    color: #3675F4;
+    color: #3675f4;
     font-family: $textFont;
     cursor: pointer;
   }
 }
-
-
 </style>
