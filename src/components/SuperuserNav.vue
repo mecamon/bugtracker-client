@@ -21,7 +21,7 @@ export default {
   name: 'SuperuserNav',
   methods: {
     showCreateCompanyModal() {
-      this.$store.commit('companies/switchModalVisibility', true);
+      this.$store.commit('companies/switchCreateModalVisibility', true);
     },
   },
 };

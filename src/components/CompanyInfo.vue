@@ -47,8 +47,8 @@
         </tbody>
       </table>
       <div class="company-options" v-if="getSelectedCompany">
-        <button class="btn btn-secondary edit">Edit</button>
-        <button class="btn btn-secondary deactivate">Deactivate company</button>
+        <button class="btn btn-secondary edit" @click="showEditModal(true)">Edit</button>
+        <button class="btn btn-secondary deactivate" @click="deactivate(getSelectedCompany)">Deactivate company</button>
         <button class="btn btn-danger delete">Delete company</button>
       </div>
     </div>
@@ -65,7 +65,23 @@ export default {
       return this.$store.getters['companies/getSelectedCompany'];
     },
   },
-  methods: {}
+  methods: {
+    showEditModal(payload) {
+      this.$store.commit('companies/switchEditModalVisibility', payload)
+    },
+    async deactivate(payload) {
+      const editCompany = {
+        "isActive": false,
+        "name": payload.name,
+        "rnc": payload.rnc,
+        "email": payload.email,
+        "telephone": payload.telephone,
+        "usersPaid": payload.usersPaid
+      }
+
+      await this.$store.dispatch('companies/deacivateOneCompany', editCompany)
+    }
+  }
 };
 </script>
 

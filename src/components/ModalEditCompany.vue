@@ -9,43 +9,38 @@
       />
       <div class="safe-area">
         <div id="title">
-          <h3>New company information</h3>
+          <h3>Editing company information</h3>
         </div>
         <div id="name-group">
           <label>Name</label>
-          <input type="text" v-model="newCompany.name"/>
+          <input type="text" v-model="editCompany.name" />
         </div>
         <div id="rnc-group">
           <label>RNC</label>
-          <input type="text" v-model="newCompany.rnc" />
+          <input type="text" v-model="editCompany.rnc" />
           <p class="alert-text">RNC inserted is already in use!</p>
         </div>
         <div id="email-group">
           <label>Email</label>
-          <input type="text" v-model="newCompany.email" />
+          <input type="text" v-model="editCompany.email" />
           <p class="alert-text">RNC inserted is already in use!</p>
         </div>
         <div id="telephone-group">
           <label>Telephone</label>
-          <input type="text" v-model="newCompany.telephone" />
+          <input type="text" v-model="editCompany.telephone" />
           <p class="alert-text">Telephone inserted is already in use!</p>
         </div>
         <div id="users-group">
           <label>Users paid</label>
-          <input type="text" v-model="newCompany.usersPaid" />
+          <input type="text" v-model="editCompany.usersPaid" />
         </div>
         <div id="date-group">
           <label>Date of expiration</label>
-          <input type="date" v-model="newCompany.dateExp" />
-        </div>
-        <div id="description-group">
-          <label>Description</label>
-          <textarea cols="30" rows="10" v-model="newCompany.description"></textarea>
-          <p class="alert-text">Description can have a maximun of 400 characters!</p>
+          <input type="date" v-model="editCompany.dateExp" />
         </div>
         <div class="buttons-group">
         <div class="buttons">
-          <button class="btn btn-main" @click="postCompany">Register</button>
+          <button class="btn btn-main" @click="saveChanges(editCompany)">Save</button>
           <button @click="closeModal" class="btn btn-danger">Cancel</button>
         </div>
         <p class="alert-text">All fields are required!</p>
@@ -58,20 +53,29 @@
 <script>
 export default {
   name: 'ModalCreateCompanyFixed',
-  data(){
+  data() {
     return {
-      newCompany: {}
+      editCompany: { ...this.$store.getters['companies/getSelectedCompany'] }
     }
   },
+  computed: {
+    getSelectedCompany() {
+      return this.$store.getters['companies/getSelectedCompany']
+    },
+  },
   methods: {
-    async postCompany() {
-      await this.$store.dispatch('companies/postCompany', this.newCompany)
+    closeModal() {
+      this.$store.commit('companies/switchEditModalVisibility', false);
+    },
+    saveChanges(payload) {
+      delete payload._id
+      delete payload.isActive
+      delete payload.usersRegistered
+
+      this.$store.dispatch('companies/editOneCompany', payload)
 
       this.closeModal()
-    },
-    closeModal() {
-      this.$store.commit('companies/switchCreateModalVisibility', false);
-    },
+    }
   },
 };
 </script>
@@ -94,7 +98,7 @@ export default {
   @include flexColumn();
   background-color: white;
   width: 600px;
-  height: 600px;
+  height: 400px;
   border-radius: 4px;
   .safe-area {
     // background-color: rgb(168, 168, 168);
@@ -145,12 +149,6 @@ export default {
   top: 245px;
   right: 0;
 }
-#description-group {
-  @include flexColumn(start, center);
-  position: absolute;
-  top: 306px;
-  right: 0;
-}
 h3 {
   font-size: 20px;
   color: $modalLabelTextColor;
@@ -179,7 +177,7 @@ label {
 .buttons-group {
   width: 100%;
   position: absolute;
-  top: 486px;
+  top: 320px;
   right: 0;
   @include flexColumn();
   .buttons {

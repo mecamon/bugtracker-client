@@ -3,7 +3,7 @@
     <div class="company-list">
       <table>
         <tbody>
-          <tr v-for="(company, index) of getCompanies" :key="index" @click="selectCompany(company)">
+          <tr v-for="(company, index) of getCompanies" :key="index" @click="selectCompany(company._id)">
             <th>{{ company.name }}</th>
             <td class="text_active" :class="{ text_inactive : company.isActive == 'Inactive' }">{{ company.isActive }}</td>
             <td>
@@ -52,8 +52,8 @@ export default {
       this.$store.commit('companies/changePage', page)
       await this.$store.dispatch('companies/fetchCompanies')
     },
-    selectCompany(company) {
-      this.$store.commit('companies/selectCompany', company)
+    async selectCompany(id) {
+      await this.$store.dispatch('companies/fetchOneCompany', id)
     }
   },
 };
