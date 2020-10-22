@@ -14,41 +14,47 @@
         <div id="name-group">
           <label>Name</label>
           <input type="text" v-model="newCompany.name"/>
+          <p class="alert-text" v-if="registerError.name">{{ registerError.name }}</p>
         </div>
         <div id="rnc-group">
           <label>RNC</label>
           <input type="text" v-model="newCompany.rnc" />
-          <p class="alert-text">RNC inserted is already in use!</p>
+          <p class="alert-text" v-if="registerError.rnc">{{ registerError.rnc }}</p>
         </div>
         <div id="email-group">
           <label>Email</label>
           <input type="text" v-model="newCompany.email" />
-          <p class="alert-text">RNC inserted is already in use!</p>
+          <p class="alert-text" v-if="registerError.email">{{ registerError.email }}</p>
         </div>
         <div id="telephone-group">
           <label>Telephone</label>
           <input type="text" v-model="newCompany.telephone" />
-          <p class="alert-text">Telephone inserted is already in use!</p>
+          <p class="alert-text" v-if="registerError.telephone">{{ registerError.telephone }}</p>
         </div>
         <div id="users-group">
           <label>Users paid</label>
           <input type="text" v-model="newCompany.usersPaid" />
+          <p class="alert-text" v-if="registerError.usersPaid">{{ registerError.usersPaid }}</p>
         </div>
         <div id="date-group">
           <label>Date of expiration</label>
           <input type="date" v-model="newCompany.dateExp" />
+          <p class="alert-text" v-if="registerError.dateExp">{{ registerError.dateExp }}</p>
         </div>
         <div id="description-group">
           <label>Description</label>
           <textarea cols="30" rows="10" v-model="newCompany.description"></textarea>
-          <p class="alert-text">Description can have a maximun of 400 characters!</p>
+          <p class="alert-text" v-if="registerError.description" 
+          >{{ registerError.description }}</p>
         </div>
         <div class="buttons-group">
         <div class="buttons">
           <button class="btn btn-main" @click="postCompany">Register</button>
           <button @click="closeModal" class="btn btn-danger">Cancel</button>
         </div>
-        <p class="alert-text">All fields are required!</p>
+        <p class="alert-text" id="fields-required"
+         v-if="registerError.required"
+         >All fields are required!</p>
       </div>
       </div>
     </div>
@@ -56,21 +62,56 @@
 </template>
 
 <script>
+import fieldValidator from '../validators/field-validators'
+
 export default {
   name: 'ModalCreateCompanyFixed',
   data(){
     return {
-      newCompany: {}
+      newCompany: {
+        name:'',
+        rnc: '',
+        email: '',
+        telephone: '',
+        usersPaid: '',
+        dateExp: '',
+        description: ''
+      },
+    }
+  },
+  computed: {
+    registerError() {
+      return this.$store.getters['companies/getRegisterError']
     }
   },
   methods: {
     async postCompany() {
-      await this.$store.dispatch('companies/postCompany', this.newCompany)
+      this.$store.commit('companies/resetErrorState')
 
-      this.closeModal()
+      let access = false
+
+      const name = fieldValidator.nameWithNumbers(2, 15, "Name", 'name' , this.newCompany.name)
+      const rnc = fieldValidator.number(9, "RNC", "rnc", this.newCompany.rnc)
+      const telephone = fieldValidator.number(12, "Telephone", "telephone", this.newCompany.telephone)
+      const email = fieldValidator.email(this.newCompany.email)
+      const usersPaid = fieldValidator.number(3, "Users paid", "usersPaid", this.newCompany.usersPaid)
+      const dateExp = fieldValidator.date(this.newCompany.dateExp)
+      const description = fieldValidator.nameWithNumbers(25, 250, "Description", 'description' , this.newCompany.description)
+
+      const fields = [ name, rnc, telephone, email, usersPaid, description, dateExp ]
+
+      for (const field of fields) {
+        if (field) this.$store.commit('companies/assignError', field)
+        else access = true
+      }
+
+      if (access) {
+        await this.$store.dispatch('companies/postCompany', this.newCompany) 
+      }
     },
     closeModal() {
       this.$store.commit('companies/switchCreateModalVisibility', false);
+      this.$store.commit('companies/resetErrorState')
     },
   },
 };
@@ -191,6 +232,7 @@ label {
   }
 }
 textarea {
+  text-indent: 6px;
   width: 462px;
   height: 107px;
   font-family: $textFont;
@@ -199,5 +241,9 @@ textarea {
   background-color: #ececec;
   border: none;
   outline: none;
+}
+#fields-required {
+  font-size: 14px;
+  margin-top: 10px;
 }
 </style>

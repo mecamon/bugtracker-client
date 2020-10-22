@@ -9,7 +9,7 @@ export default {
     },
   }),
   getters: {
-    getError: (state) => state.error
+    getError: state => state.error
   },
   mutations: {
     showError: (state, message) => {
