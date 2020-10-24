@@ -44,7 +44,7 @@ th, td {
 input {
   outline: none;
   border: 1px solid $mainBorderColor;
-  color: $textColor;
+  color: $textColor3;
 }
 input:focus {
   outline: none;
@@ -75,6 +75,16 @@ input:focus {
   background-color: $alertTextColor;
   border-radius: 15px;
 }
+.btn-success {
+  color: #ffffff;
+  background-color: $activeColor;
+  border-radius: 15px;
+}
+.btn-success:hover {
+  color: #ffffff;
+  background-color: #3bac3e;
+  border-radius: 15px;
+}
 .btn-danger:hover {
   background-color: #df3b3b;
 }
@@ -82,6 +92,10 @@ input:focus {
   font-family: $textFont;
   color: $alertTextColor;
   font-size: 12px;
+}
+.success-text {
+  font-family: $textFont;
+  color: $activeColor;
 }
 .text_active {
   color: $activeColor;

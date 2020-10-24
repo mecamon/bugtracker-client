@@ -5,6 +5,10 @@ export default {
     state: () => ({
         showCreateModal: false,
         showEditModal: false,
+        showEditConfirmModal: false,
+        showDeactivateModal: false,
+        showDeleteModal: false,
+        companyEdited: null,
         companies: [],
         companyPages: [],
         selectedCompany: null,
@@ -23,17 +27,22 @@ export default {
         }
     }),
     getters: {
+        getCompanyEdited: state => state.companyEdited,
         getRegisterError: state => state.registerError,
         getStateFilter: state => state.state,
         getDateFilter: state => state.date,
         getCurrentPage: state => state.page,
         getCreateModalState: state => state.showCreateModal,
         getEditModalState: state => state.showEditModal,
+        getModalEditConfirm: state => state.showEditConfirmModal,
+        getDeactivateModal: state => state.showDeactivateModal,
+        getModalDeleteConfirm: state => state.showDeleteModal,
         getCompanies: state => state.companies,
         getCompanyPages: state => state.companyPages,
         getSelectedCompany: state => state.selectedCompany
     },
     mutations: {
+        assignCompanyEdited: (state, payload) => state.companyEdited = payload, 
         resetErrorState: (state) => {
             for (const key in state.registerError) {
                 state.registerError[key] = null
@@ -53,6 +62,9 @@ export default {
         selectCompany: (state, payload) => state.selectedCompany = payload,
         switchCreateModalVisibility: (state, payload) => state.showCreateModal = payload,
         switchEditModalVisibility: (state, payload) => state.showEditModal = payload,
+        switchEditConfirmModalVisibility: (state, payload) => state.showEditConfirmModal = payload,
+        switchDeactivateModalVisibility: (state, payload) => state.showDeactivateModal = payload,
+        switchDeleteModalVisibility: (state, payload) => state.showDeleteModal = payload,
         assingCompaniesData: (state, payload) =>  state.companies = payload,
         assingCompanyPages: (state, payload) =>  {
             const newCompanyPages = []
@@ -104,7 +116,6 @@ export default {
             
             context.commit('selectCompany', response.data)  
             context.dispatch('fetchCompanies') 
-            
         },
         deacivateOneCompany: async (context, payload) => {
 
@@ -149,6 +160,14 @@ export default {
                         context.commit('assignError', errorData)
                     }
                 })
+        },
+        deleteCompany: async (context, id) => {
+
+            await axiosInstance.delete(`companies/${id}`, 
+                { headers: {'Authorization': localStorage.getItem('token')} })
+
+            context.commit('selectCompany', null)
+            context.dispatch('fetchCompanies') 
         }
         
     },

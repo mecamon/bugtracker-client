@@ -37,7 +37,7 @@ export default {
     height: 86px;
     p {
         font-size: 14px;
-        color: $footerText;
+        color: $textColor3;
     }
     .block-1 {
         @include flexColumn(start, space-evenly);

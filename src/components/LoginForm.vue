@@ -94,6 +94,7 @@ export default {
       text-indent: 15px;
       font-family: $textFont;
       font-size: 14px;
+      color: $textColor;
     }
     p {
       margin-left: 10px;

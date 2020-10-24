@@ -2,7 +2,7 @@
   <div>
     <div class="company-info-list">
       <div class="no-company-selected" v-if="!getSelectedCompany">
-        <h1>Select one company</h1>
+        <h1>Select a company</h1>
       </div>
       <table v-if="getSelectedCompany">
         <tbody>
@@ -49,7 +49,7 @@
       <div class="company-options" v-if="getSelectedCompany">
         <button class="btn btn-secondary edit" @click="showEditModal(true)">Edit</button>
         <button class="btn btn-secondary deactivate" @click="deactivate(getSelectedCompany)">Deactivate company</button>
-        <button class="btn btn-danger delete">Delete company</button>
+        <button class="btn btn-danger delete" @click="showDeleteModal(getSelectedCompany)">Delete company</button>
       </div>
     </div>
   </div>
@@ -69,7 +69,7 @@ export default {
     showEditModal(payload) {
       this.$store.commit('companies/switchEditModalVisibility', payload)
     },
-    async deactivate(payload) {
+    deactivate(payload) {
       const editCompany = {
         "isActive": false,
         "name": payload.name,
@@ -79,7 +79,11 @@ export default {
         "usersPaid": payload.usersPaid
       }
 
-      await this.$store.dispatch('companies/deacivateOneCompany', editCompany)
+      this.$store.commit('companies/assignCompanyEdited', editCompany)
+      this.$store.commit('companies/switchDeactivateModalVisibility', true)
+    },
+    showDeleteModal(payload) {
+      this.$store.commit('companies/switchDeleteModalVisibility', true)
     }
   }
 };

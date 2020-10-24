@@ -18,17 +18,17 @@
         <div id="rnc-group">
           <label>RNC</label>
           <input type="text" v-model="editCompany.rnc" />
-          <p class="alert-text">RNC inserted is already in use!</p>
+          <!-- <p class="alert-text">RNC inserted is already in use!</p> -->
         </div>
         <div id="email-group">
           <label>Email</label>
           <input type="text" v-model="editCompany.email" />
-          <p class="alert-text">RNC inserted is already in use!</p>
+          <!-- <p class="alert-text">RNC inserted is already in use!</p> -->
         </div>
         <div id="telephone-group">
           <label>Telephone</label>
           <input type="text" v-model="editCompany.telephone" />
-          <p class="alert-text">Telephone inserted is already in use!</p>
+          <!-- <p class="alert-text">Telephone inserted is already in use!</p> -->
         </div>
         <div id="users-group">
           <label>Users paid</label>
@@ -39,12 +39,14 @@
           <input type="date" v-model="editCompany.dateExp" />
         </div>
         <div class="buttons-group">
-        <div class="buttons">
-          <button class="btn btn-main" @click="saveChanges(editCompany)">Save</button>
-          <button @click="closeModal" class="btn btn-danger">Cancel</button>
+          <div class="buttons">
+            <button class="btn btn-main" @click="saveChanges(editCompany)">
+              Save
+            </button>
+            <button @click="closeModal" class="btn btn-danger">Cancel</button>
+          </div>
+          <p class="alert-text">All fields are required!</p>
         </div>
-        <p class="alert-text">All fields are required!</p>
-      </div>
       </div>
     </div>
   </div>
@@ -55,12 +57,12 @@ export default {
   name: 'ModalCreateCompanyFixed',
   data() {
     return {
-      editCompany: { ...this.$store.getters['companies/getSelectedCompany'] }
-    }
+      editCompany: { ...this.$store.getters['companies/getSelectedCompany'] },
+    };
   },
   computed: {
     getSelectedCompany() {
-      return this.$store.getters['companies/getSelectedCompany']
+      return this.$store.getters['companies/getSelectedCompany'];
     },
   },
   methods: {
@@ -68,14 +70,15 @@ export default {
       this.$store.commit('companies/switchEditModalVisibility', false);
     },
     saveChanges(payload) {
-      delete payload._id
-      delete payload.isActive
-      delete payload.usersRegistered
 
-      this.$store.dispatch('companies/editOneCompany', payload)
+      delete payload._id;
+      delete payload.isActive;
+      delete payload.usersRegistered;
 
-      this.closeModal()
-    }
+      this.$store.commit('companies/assignCompanyEdited', payload);
+
+      this.$store.commit('companies/switchEditConfirmModalVisibility', true);
+    },
   },
 };
 </script>
@@ -94,9 +97,10 @@ export default {
   @include flexRow();
 }
 .modal {
+  // border: 3px solid rgba($color: #000000, $alpha: 0.03);
   position: relative;
   @include flexColumn();
-  background-color: white;
+  background-color: $lightBackgroundColor;
   width: 600px;
   height: 400px;
   border-radius: 4px;
@@ -107,6 +111,7 @@ export default {
     width: 462px;
   }
 }
+
 #title {
   position: absolute;
   top: 39px;
@@ -151,19 +156,19 @@ export default {
 }
 h3 {
   font-size: 20px;
-  color: $modalLabelTextColor;
+  color: $textColor2;
 }
 input {
   width: 220px;
   height: 30px;
-  background-color: #ececec;
+  background-color: $inputBackgroundColor;
   border: none;
   font-size: 14px;
   text-indent: 6px;
 }
 label {
   font-family: $textFont;
-  color: $modalLabelTextColor;
+  color: $textColor2;
   font-size: 14px;
 }
 .close-icon {

@@ -133,7 +133,7 @@ export default {
 .modal {
   position: relative;
   @include flexColumn();
-  background-color: white;
+  background-color: $lightBackgroundColor;
   width: 600px;
   height: 600px;
   border-radius: 4px;
@@ -194,19 +194,19 @@ export default {
 }
 h3 {
   font-size: 20px;
-  color: $modalLabelTextColor;
+  color: $textColor2;
 }
 input {
   width: 220px;
   height: 30px;
-  background-color: #ececec;
+  background-color: $inputBackgroundColor;
   border: none;
   font-size: 14px;
   text-indent: 6px;
 }
 label {
   font-family: $textFont;
-  color: $modalLabelTextColor;
+  color: $textColor2;
   font-size: 14px;
 }
 .close-icon {
@@ -237,8 +237,8 @@ textarea {
   height: 107px;
   font-family: $textFont;
   font-size: 14px;
-  color: #606060;
-  background-color: #ececec;
+  color: $textColor3;
+  background-color: $inputBackgroundColor;
   border: none;
   outline: none;
 }
