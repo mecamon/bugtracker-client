@@ -95,7 +95,7 @@ export default {
       const telephone = fieldValidator.number(12, "Telephone", "telephone", this.newCompany.telephone)
       const email = fieldValidator.email(this.newCompany.email)
       const usersPaid = fieldValidator.number(3, "Users paid", "usersPaid", this.newCompany.usersPaid)
-      const dateExp = fieldValidator.date(this.newCompany.dateExp)
+      const dateExp = fieldValidator.date('Date of exp.', 'dateExp' ,this.newCompany.dateExp)
       const description = fieldValidator.nameWithNumbers(25, 250, "Description", 'description' , this.newCompany.description)
 
       const fields = [ name, rnc, telephone, email, usersPaid, description, dateExp ]

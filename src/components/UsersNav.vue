@@ -1,10 +1,9 @@
 <template>
   <div class="nav">
     <div id="routes">
-      <router-link to="/superuser/companies">Companies</router-link>
-      <router-link to="#">Messages</router-link>
-      <button @click="showCreateCompanyModal">Create company</button>
-      <button @click="showCreateSupervisor">Create supervisor</button>
+      <router-link to="/users-menu/pending">Pending</router-link>
+       <router-link to="/users-menu/history">History</router-link>
+      <button @click="showCreateReportModal">Create report</button>
     </div>
     <span id="search">
       <input type="text" placeholder="Search" />
@@ -18,14 +17,11 @@
 
 <script>
 export default {
-  name: 'SuperuserNav',
+  name: 'UsersNav',
   methods: {
-    showCreateCompanyModal() {
-      this.$store.commit('companies/switchCreateModalVisibility', true);
+    showCreateReportModal() {
+      this.$store.commit('users/switchModalCreateReport', true);
     },
-    showCreateSupervisor() {
-      this.$store.commit('auth/switchModalCreateSuperVisibility', true)
-    }
   },
 };
 </script>
@@ -40,7 +36,7 @@ export default {
   height: 38px;
   // background-color: red;
   #routes {
-    width: 600px;
+    width: 380px;
     height: 100%;
     @include flexRow(center, space-between);
     // background-color: black;

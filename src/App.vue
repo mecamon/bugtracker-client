@@ -41,7 +41,7 @@ th, td {
   color: $textColor2;
   font-family: $textFont;
 }
-input {
+input, select {
   outline: none;
   border: 1px solid $mainBorderColor;
   color: $textColor3;

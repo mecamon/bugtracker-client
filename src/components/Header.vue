@@ -5,7 +5,7 @@
       <img src="../assets/user.svg" alt="user-icon">
       <div class="block-names">
         <p>{{ completeName }}</p>
-        <p class="orange-text">Superuser</p>
+        <p class="orange-text">{{ actualRole }}</p>
       </div>
       <button class="btn btn-secondary" @click="logout">Log out</button>
     </div>
@@ -23,7 +23,8 @@ export default {
   data() {
     return {
       completeName: localStorage.getItem('firstname') 
-        + ' ' + localStorage.getItem('lastname')
+        + ' ' + localStorage.getItem('lastname'),
+      actualRole: localStorage.getItem('actualRole')
     };
   },
   methods: {

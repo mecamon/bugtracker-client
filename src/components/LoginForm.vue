@@ -54,13 +54,30 @@ export default {
       if (response) {
         const { data } = response;
 
-        const { firstname, lastname, token } = data;
+        const { firstname, lastname, token, isTech, isSupervisor } = data;
 
         localStorage.setItem('firstname', firstname);
         localStorage.setItem('lastname', lastname);
         localStorage.setItem('token', token);
+        localStorage.setItem('isTech', isTech);
+        localStorage.setItem('isSupervisor', isSupervisor);
 
-        this.$router.push('superuser/companies');
+        if (isTech == undefined && isSupervisor == undefined){
+          localStorage.setItem('actualRole', 'Superuser')
+          this.$router.push({ path: '/superuser/companies' })
+        }
+        else if (isTech == false && isSupervisor == false) {
+          localStorage.setItem('actualRole', 'User')
+          this.$router.push({ path: '/users-menu/pending' })
+        }
+        else if (isTech == true && isSupervisor == false) {
+          localStorage.setItem('actualRole', 'Tech')
+          this.$router.push({ path: '/techs-menu' })
+        }
+        else if (isTech == false && isSupervisor == true) {
+          localStorage.setItem('actualRole', 'Supervisor')
+          this.$router.push({ path: '/supervisors-menu' })
+        }
       }
     },
   },

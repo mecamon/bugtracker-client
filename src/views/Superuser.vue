@@ -7,6 +7,8 @@
         <ModalEditConfirm v-if="modalEditConfirm" />
         <ModalDeactivateConfirm v-if="modalDeactivateConfirm" />
         <ModalDeleteConfirm v-if="modalDeleteConfirm" />
+        <ModalCreateSupervisor v-if="modalCreateSupervisor" />
+        <ModalSupervisorCreated v-if="modalSupervisorCreated"/>
         <router-view />
     </div>
 </template>
@@ -19,6 +21,8 @@ import ModalEditCompany from '../components/ModalEditCompany.vue'
 import ModalEditConfirm from '../components/ModalEditConfirm.vue'
 import ModalDeactivateConfirm from '../components/ModalDeactivateConfirm.vue'
 import ModalDeleteConfirm from '../components/ModalDeleteConfirm.vue'
+import ModalCreateSupervisor from '../components/ModalCreateSupervisor.vue'
+import ModalSupervisorCreated from '../components/ModalSupervisorCreated.vue'
 
 export default {
     components: {
@@ -28,10 +32,9 @@ export default {
         ModalEditCompany,
         ModalEditConfirm,
         ModalDeactivateConfirm,
-        ModalDeleteConfirm
-    },
-    data() {
-        return {}
+        ModalDeleteConfirm,
+        ModalCreateSupervisor,
+        ModalSupervisorCreated
     },
     computed: {
         createCompanyModal() {
@@ -51,6 +54,12 @@ export default {
         },
         modalDeleteConfirm() {
             return this.$store.getters['companies/getModalDeleteConfirm']
+        },
+        modalCreateSupervisor() {
+            return this.$store.getters['auth/getModalCreateSupervisor']
+        },
+        modalSupervisorCreated() {
+            return this.$store.getters['auth/getModalSupervisorCreated']
         }
     }
 }

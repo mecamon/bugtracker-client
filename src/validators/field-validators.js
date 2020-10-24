@@ -7,15 +7,15 @@ function name(minLength, label, key, field) {
     return [key, `${label} needs to be at least ${minLength} characters long`];
   } 
   else if (/[^a-zA-Z ]/.test(field)) {
-    return [key, `${label} can only contains character from A-Z or a-z`];
+    return [key, `${label} can only contains letters A-Z or a-z`];
   }
 
   return null
 }
 
-function date(field) {
+function date(label, key, field) {
   if (field.length == 0) {
-    return ['dateExp', 'Date is a required field!'];
+    return [key, `${label} is a required field!`];
   } 
   return null
 }
@@ -50,15 +50,21 @@ function username(minLength, field) {
 
 function password(field) {
   if (field.length < 6) {
-    return `Password needs to be at least 6 characters long`;
+    return ['password', 'Password needs to be at least 6 characters long'];
   } else if (
     !/[a-z]/.test(field) ||
     !/[A-Z]/.test(field) ||
     !/[0-9]/.test(field)
   ) {
-    return `Password needs to have at least on of these a-z, A-Z, 0-9`;
+    return ['password', 'Password needs to have a-z, A-Z and 0-9'];
   }
+  return null
+}
 
+function idCompany(field) {
+  if (field.length == 0) {
+    return ['idCompany', 'Company ID is a required field!'];
+  } 
   return null
 }
 
@@ -110,4 +116,5 @@ export default Object.freeze({
   nameNotEmpty,
   nameWithNumbers,
   number,
+  idCompany
 });
